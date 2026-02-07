@@ -1,0 +1,204 @@
+{
+  "info": {
+    "name": "XRPL Dev Platform",
+    "description": "CRUD for Payments, Escrows, Wallet creation and Account APIs. Use with XRPL Testnet backend (default: http://localhost:4000).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000" },
+    { "key": "address", "value": "" },
+    { "key": "seed", "value": "" },
+    { "key": "owner", "value": "" },
+    { "key": "offerSequence", "value": "0" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/health",
+            "description": "Check if the backend is running and connected to XRPL Testnet."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Wallet",
+      "item": [
+        {
+          "name": "Create Wallet",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": "{{baseUrl}}/api/wallet/create",
+            "description": "Generate a new funded testnet wallet. Returns address, secret (seed), publicKey, and balance. Store the seed securely."
+          }
+        },
+        {
+          "name": "Restore Wallet",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seed\": \"{{seed}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/wallet/restore",
+            "description": "Restore wallet from a secret seed. Returns address and publicKey (no secret in response)."
+          }
+        },
+        {
+          "name": "Get Balance",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/wallet/balance/{{address}}",
+            "description": "Get XRP balance for an address. Returns balanceDrops and balanceXrp."
+          }
+        },
+        {
+          "name": "List Wallets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/wallet/list",
+            "description": "List all wallets created in this session (in-memory). Use these addresses/seeds for payments and escrows."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payment",
+      "item": [
+        {
+          "name": "Send XRP (alias)",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seed\": \"{{seed}}\",\n  \"toAddress\": \"rDestination...\",\n  \"amountXRP\": \"10\"\n}"
+            },
+            "url": "{{baseUrl}}/api/pay",
+            "description": "Send XRP from seed to destination. Convenience alias for send-xrp."
+          }
+        },
+        {
+          "name": "Send XRP",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senderSeed\": \"{{seed}}\",\n  \"destination\": \"rDestination...\",\n  \"amount\": \"10\"\n}"
+            },
+            "url": "{{baseUrl}}/api/payment/send-xrp",
+            "description": "Send XRP. amount is in XRP (string)."
+          }
+        },
+        {
+          "name": "Send RLUSD",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senderSeed\": \"{{seed}}\",\n  \"destination\": \"rDestination...\",\n  \"amount\": \"100\",\n  \"issuer\": \"rIssuerAddress...\"\n}"
+            },
+            "url": "{{baseUrl}}/api/payment/send-rlusd",
+            "description": "Send issued currency RLUSD. issuer is the RLUSD issuer address."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Escrow",
+      "item": [
+        {
+          "name": "Create Escrow",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senderSeed\": \"{{seed}}\",\n  \"destination\": \"rReceiver...\",\n  \"amount\": \"50\",\n  \"finishAfterMinutes\": 5,\n  \"cancelAfterMinutes\": 60\n}"
+            },
+            "url": "{{baseUrl}}/api/escrow/create",
+            "description": "Lock XRP in time-based escrow. finishAfterMinutes: when receiver can claim. cancelAfterMinutes (optional): when sender can cancel."
+          }
+        },
+        {
+          "name": "Finish Escrow",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"finisherSeed\": \"{{seed}}\",\n  \"owner\": \"{{owner}}\",\n  \"offerSequence\": {{offerSequence}}\n}"
+            },
+            "url": "{{baseUrl}}/api/escrow/finish",
+            "description": "Release escrow to destination (after finishAfter time). Finisher must be the destination account."
+          }
+        },
+        {
+          "name": "Cancel Escrow",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cancellerSeed\": \"{{seed}}\",\n  \"owner\": \"{{owner}}\",\n  \"offerSequence\": {{offerSequence}}\n}"
+            },
+            "url": "{{baseUrl}}/api/escrow/cancel",
+            "description": "Cancel an escrow (after cancelAfter time). Canceller must be the owner. Funds return to owner."
+          }
+        },
+        {
+          "name": "List Escrows",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/escrow/list/{{address}}",
+            "description": "List all escrows for an account (as owner). Use returned sequence for finish/cancel."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Account",
+      "item": [
+        {
+          "name": "Account Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/account/info/{{address}}",
+            "description": "Get account info: balance, sequence, flags, etc."
+          }
+        },
+        {
+          "name": "Account Transactions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/account/transactions/{{address}}?limit=20",
+            "description": "Get recent transactions for an address."
+          }
+        },
+        {
+          "name": "Trust Lines",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/account/trustlines/{{address}}",
+            "description": "Get trust lines (issued currency balances) for an address."
+          }
+        }
+      ]
+    }
+  ]
+}
