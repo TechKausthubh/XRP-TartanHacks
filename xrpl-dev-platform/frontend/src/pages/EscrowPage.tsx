@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Card from "../components/Card";
+import InfoTooltip from "../components/InfoTooltip";
 import StatusBadge from "../components/StatusBadge";
 import * as api from "../api/client";
 
@@ -113,7 +114,13 @@ export default function EscrowPage({ seed, address }: Props) {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-white">Smart Escrow</h2>
+      <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+        Smart Escrow
+        <InfoTooltip
+          title="Escrow"
+          content="Escrow locks XRP until a condition is met. Time-based escrow releases to a destination after a set time; you can optionally set a later time after which the owner can cancel and get funds back."
+        />
+      </h2>
 
       {error && (
         <div className="flex items-center gap-3 bg-red-900/20 border border-red-800 text-red-400 px-4 py-3 rounded-lg">
@@ -322,28 +329,37 @@ export default function EscrowPage({ seed, address }: Props) {
         {escrows.length === 0 ? (
           <p className="text-gray-500">No active escrows.</p>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="text-gray-400 border-b border-gray-800">
-                  <th className="text-left py-2">Destination</th>
-                  <th className="text-left py-2">Amount (XRP)</th>
-                  <th className="text-left py-2">Releases After</th>
-                  <th className="text-left py-2">Cancels After</th>
-                </tr>
-              </thead>
-              <tbody>
-                {escrows.map((e: any, i: number) => (
-                  <tr key={i} className="border-b border-gray-800">
-                    <td className="py-2 font-mono text-xs">{e.destination?.slice(0, 20)}...</td>
-                    <td className="py-2">{e.amount}</td>
-                    <td className="py-2 text-xs">{e.finishAfter ?? "N/A"}</td>
-                    <td className="py-2 text-xs">{e.cancelAfter ?? "N/A"}</td>
+          <>
+            <p className="text-gray-400 text-xs mb-3">
+              For Release or Cancel, use <strong>Owner</strong> = account and <strong>Offer Sequence</strong> = sequence below.
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-gray-400 border-b border-gray-800">
+                    <th className="text-left py-2">Owner (Account)</th>
+                    <th className="text-left py-2">Destination</th>
+                    <th className="text-left py-2">Amount (XRP)</th>
+                    <th className="text-left py-2">Sequence</th>
+                    <th className="text-left py-2">Releases After</th>
+                    <th className="text-left py-2">Cancels After</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {escrows.map((e: any, i: number) => (
+                    <tr key={i} className="border-b border-gray-800">
+                      <td className="py-2 font-mono text-xs">{e.account ?? ""}</td>
+                      <td className="py-2 font-mono text-xs">{e.destination ?? ""}</td>
+                      <td className="py-2">{e.amount}</td>
+                      <td className="py-2 font-mono text-xrpl-accent">{e.sequence}</td>
+                      <td className="py-2 text-xs">{e.finishAfter ?? "N/A"}</td>
+                      <td className="py-2 text-xs">{e.cancelAfter ?? "N/A"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </Card>
     </div>

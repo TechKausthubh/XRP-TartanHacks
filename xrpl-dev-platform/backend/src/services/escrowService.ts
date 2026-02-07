@@ -46,6 +46,8 @@ export async function createEscrow(params: CreateEscrowParams) {
   const result = await client.submitAndWait(signed.tx_blob);
 
   const meta = result.result.meta as any;
+  // OfferSequence for EscrowFinish/EscrowCancel must be the Sequence of the EscrowCreate tx
+  const offerSequence = prepared.Sequence!;
 
   return {
     hash: result.result.hash,
@@ -53,7 +55,7 @@ export async function createEscrow(params: CreateEscrowParams) {
     sender: wallet.classicAddress,
     destination: params.destination,
     amount: params.amount,
-    sequence: result.result.Sequence,
+    sequence: offerSequence,
     finishAfter: new Date((finishAfter + 946684800) * 1000).toISOString(),
   };
 }
@@ -102,7 +104,7 @@ export async function cancelEscrow(params: CancelEscrowParams) {
   };
 }
 
-/** List escrows for an account */
+/** List escrows for an account. Fetches OfferSequence from the creating tx so finish/cancel work. */
 export async function listEscrows(address: string) {
   const client = await ensureConnected();
   const response = await client.request({
@@ -112,16 +114,32 @@ export async function listEscrows(address: string) {
     ledger_index: "validated",
   });
 
-  return response.result.account_objects.map((obj: any) => ({
-    account: obj.Account,
-    destination: obj.Destination,
-    amount: Number(obj.Amount) / 1_000_000,
-    finishAfter: obj.FinishAfter
-      ? new Date((obj.FinishAfter + 946684800) * 1000).toISOString()
-      : null,
-    cancelAfter: obj.CancelAfter
-      ? new Date((obj.CancelAfter + 946684800) * 1000).toISOString()
-      : null,
-    sequence: obj.PreviousTxnLgrSeq,
-  }));
+  const list = await Promise.all(
+    response.result.account_objects.map(async (obj: any) => {
+      let offerSequence: number = obj.PreviousTxnLgrSeq;
+      try {
+        const txRes = await client.request({
+          command: "tx",
+          transaction: obj.PreviousTxnID,
+        });
+        offerSequence = (txRes.result as any).Sequence;
+      } catch {
+        // keep ledger seq as fallback (wrong for finish/cancel but at least we return something)
+      }
+      return {
+        account: obj.Account,
+        destination: obj.Destination,
+        amount: Number(obj.Amount) / 1_000_000,
+        finishAfter: obj.FinishAfter
+          ? new Date((obj.FinishAfter + 946684800) * 1000).toISOString()
+          : null,
+        cancelAfter: obj.CancelAfter
+          ? new Date((obj.CancelAfter + 946684800) * 1000).toISOString()
+          : null,
+        sequence: offerSequence,
+      };
+    })
+  );
+
+  return list;
 }

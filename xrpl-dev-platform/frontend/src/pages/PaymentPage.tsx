@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Card from "../components/Card";
+import InfoTooltip from "../components/InfoTooltip";
 import StatusBadge from "../components/StatusBadge";
 import * as api from "../api/client";
 
@@ -49,7 +50,13 @@ export default function PaymentPage({ seed, address }: Props) {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-white">Send Payment</h2>
+      <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+        Send Payment
+        <InfoTooltip
+          title="Payment"
+          content="A Payment transaction moves XRP (or issued currency like RLUSD) from one account to another. It is final once the ledger closes (~3–5 seconds)."
+        />
+      </h2>
 
       {error && (
         <div className="flex items-center gap-3 bg-red-900/20 border border-red-800 text-red-400 px-4 py-3 rounded-lg">

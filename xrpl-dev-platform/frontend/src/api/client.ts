@@ -17,6 +17,7 @@ export const createWallet = () => request<any>("/wallet/create", { method: "POST
 export const restoreWallet = (seed: string) =>
   request<any>("/wallet/restore", { method: "POST", body: JSON.stringify({ seed }) });
 export const getBalance = (address: string) => request<any>(`/wallet/balance/${address}`);
+export const listWallets = () => request<any>("/wallet/list");
 
 // Account
 export const getAccountInfo = (address: string) => request<any>(`/account/info/${address}`);
@@ -42,3 +43,8 @@ export const finishEscrow = (data: { finisherSeed: string; owner: string; offerS
 export const cancelEscrow = (data: { cancellerSeed: string; owner: string; offerSequence: number }) =>
   request<any>("/escrow/cancel", { method: "POST", body: JSON.stringify(data) });
 export const listEscrows = (address: string) => request<any>(`/escrow/list/${address}`);
+
+// AI: chat with Dedalus Labs for SDK code generation (key from backend .env)
+export type AiMessage = { role: "user" | "assistant"; content: string };
+export const aiGenerate = (messages: AiMessage[]) =>
+  request<{ content: string }>("/ai/generate", { method: "POST", body: JSON.stringify({ messages }) });

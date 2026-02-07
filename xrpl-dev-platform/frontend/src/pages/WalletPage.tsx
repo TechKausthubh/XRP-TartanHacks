@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Card from "../components/Card";
+import InfoTooltip from "../components/InfoTooltip";
 import * as api from "../api/client";
 
 interface Props {
@@ -55,7 +56,13 @@ export default function WalletPage({ address, seed, onWalletCreated }: Props) {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-white">Wallet Management</h2>
+      <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+        Wallet Management
+        <InfoTooltip
+          title="Wallet"
+          content="A wallet holds your keys: address (rXXX...) receives XRP; the secret (seed) signs transactions. On testnet you can create funded wallets instantly. Never share your secret."
+        />
+      </h2>
 
       {error && <p className="text-red-400 bg-red-900/20 px-4 py-2 rounded">{error}</p>}
 
@@ -63,7 +70,7 @@ export default function WalletPage({ address, seed, onWalletCreated }: Props) {
         {/* Create Wallet */}
         <Card title="Create New Testnet Wallet">
           <p className="text-gray-400 text-sm mb-4">
-            Generate a new funded wallet on XRPL Testnet.
+            Generate a new funded wallet on XRPL Testnet. The faucet credits it with XRP so you can send and create escrows immediately.
           </p>
           <button
             onClick={handleCreate}
