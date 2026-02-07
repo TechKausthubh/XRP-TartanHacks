@@ -3,9 +3,10 @@ import Dashboard from "./pages/Dashboard";
 import WalletPage from "./pages/WalletPage";
 import PaymentPage from "./pages/PaymentPage";
 import EscrowPage from "./pages/EscrowPage";
+import QuickstartPage from "./pages/QuickstartPage";
 import Sidebar from "./components/Sidebar";
 
-type Page = "dashboard" | "wallet" | "payment" | "escrow";
+type Page = "dashboard" | "wallet" | "payment" | "escrow" | "quickstart";
 
 export default function App() {
   const [page, setPage] = useState<Page>("dashboard");
@@ -34,6 +35,9 @@ export default function App() {
         )}
         {page === "escrow" && (
           <EscrowPage seed={walletSeed} address={walletAddress} />
+        )}
+        {page === "quickstart" && (
+          <QuickstartPage />
         )}
       </main>
     </div>

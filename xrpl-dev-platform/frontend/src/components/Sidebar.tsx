@@ -1,4 +1,4 @@
-type Page = "dashboard" | "wallet" | "payment" | "escrow";
+type Page = "dashboard" | "wallet" | "payment" | "escrow" | "quickstart";
 
 interface Props {
   currentPage: Page;
@@ -6,10 +6,11 @@ interface Props {
 }
 
 const navItems: { page: Page; label: string; icon: string }[] = [
-  { page: "dashboard", label: "Dashboard", icon: "📊" },
-  { page: "wallet", label: "Wallet", icon: "👛" },
-  { page: "payment", label: "Payments", icon: "💸" },
-  { page: "escrow", label: "Escrow", icon: "🔒" },
+  { page: "dashboard", label: "Dashboard", icon: "\u{1F4CA}" },
+  { page: "wallet", label: "Wallet", icon: "\u{1F45B}" },
+  { page: "payment", label: "Payments", icon: "\u{1F4B8}" },
+  { page: "escrow", label: "Escrow", icon: "\u{1F512}" },
+  { page: "quickstart", label: "Dev Quickstart", icon: "\u{1F680}" },
 ];
 
 export default function Sidebar({ currentPage, onNavigate }: Props) {

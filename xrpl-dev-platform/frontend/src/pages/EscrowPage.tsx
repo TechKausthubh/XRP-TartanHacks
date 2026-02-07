@@ -9,13 +9,24 @@ interface Props {
 }
 
 export default function EscrowPage({ seed, address }: Props) {
+  // Create form
   const [destination, setDestination] = useState("");
   const [amount, setAmount] = useState("");
   const [finishMinutes, setFinishMinutes] = useState("5");
   const [cancelMinutes, setCancelMinutes] = useState("");
-  const [loading, setLoading] = useState(false);
+
+  // Finish form
+  const [finishOwner, setFinishOwner] = useState("");
+  const [finishSequence, setFinishSequence] = useState("");
+
+  // Cancel form
+  const [cancelOwner, setCancelOwner] = useState("");
+  const [cancelSequence, setCancelSequence] = useState("");
+
+  const [loading, setLoading] = useState("");
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [escrows, setEscrows] = useState<any[]>([]);
 
   useEffect(() => {
@@ -32,10 +43,15 @@ export default function EscrowPage({ seed, address }: Props) {
     );
   }
 
-  async function handleCreate() {
-    setLoading(true);
+  function clearAlerts() {
     setError("");
+    setSuccess("");
     setResult(null);
+  }
+
+  async function handleCreate() {
+    setLoading("create");
+    clearAlerts();
     try {
       const res = await api.createEscrow({
         senderSeed: seed,
@@ -45,12 +61,53 @@ export default function EscrowPage({ seed, address }: Props) {
         cancelAfterMinutes: cancelMinutes ? Number(cancelMinutes) : undefined,
       });
       setResult(res);
+      setSuccess("Escrow created successfully!");
       const esc = await api.listEscrows(address);
       setEscrows(esc);
     } catch (err: any) {
       setError(err.message);
     } finally {
-      setLoading(false);
+      setLoading("");
+    }
+  }
+
+  async function handleFinish() {
+    setLoading("finish");
+    clearAlerts();
+    try {
+      const res = await api.finishEscrow({
+        finisherSeed: seed,
+        owner: finishOwner,
+        offerSequence: Number(finishSequence),
+      });
+      setResult(res);
+      setSuccess("Escrow released successfully!");
+      const esc = await api.listEscrows(address);
+      setEscrows(esc);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading("");
+    }
+  }
+
+  async function handleCancel() {
+    setLoading("cancel");
+    clearAlerts();
+    try {
+      const res = await api.cancelEscrow({
+        cancellerSeed: seed,
+        owner: cancelOwner,
+        offerSequence: Number(cancelSequence),
+      });
+      setResult(res);
+      setSuccess("Escrow cancelled successfully!");
+      const esc = await api.listEscrows(address);
+      setEscrows(esc);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading("");
     }
   }
 
@@ -58,7 +115,18 @@ export default function EscrowPage({ seed, address }: Props) {
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-white">Smart Escrow</h2>
 
-      {error && <p className="text-red-400 bg-red-900/20 px-4 py-2 rounded">{error}</p>}
+      {error && (
+        <div className="flex items-center gap-3 bg-red-900/20 border border-red-800 text-red-400 px-4 py-3 rounded-lg">
+          <span className="text-red-500 text-lg">&#10007;</span>
+          <span>{error}</span>
+        </div>
+      )}
+      {success && (
+        <div className="flex items-center gap-3 bg-green-900/20 border border-green-800 text-green-400 px-4 py-3 rounded-lg">
+          <span className="text-green-500 text-lg">&#10003;</span>
+          <span>{success}</span>
+        </div>
+      )}
 
       {/* Create Escrow */}
       <Card title="Create Time-Based Escrow">
@@ -110,17 +178,107 @@ export default function EscrowPage({ seed, address }: Props) {
 
           <button
             onClick={handleCreate}
-            disabled={loading || !destination || !amount || !finishMinutes}
+            disabled={!!loading || !destination || !amount || !finishMinutes}
             className="w-full bg-xrpl-accent hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
           >
-            {loading ? "Creating Escrow..." : "Create Escrow"}
+            {loading === "create" ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                Creating Escrow...
+              </span>
+            ) : (
+              "Create Escrow"
+            )}
           </button>
         </div>
       </Card>
 
+      {/* Finish / Cancel in side-by-side layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Finish Escrow */}
+        <Card title="Release Escrow">
+          <div className="space-y-4">
+            <div>
+              <label className="text-gray-400 text-xs uppercase tracking-wider">Escrow Owner Address</label>
+              <input
+                type="text"
+                value={finishOwner}
+                onChange={(e) => setFinishOwner(e.target.value)}
+                placeholder="rOwner..."
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+              />
+            </div>
+            <div>
+              <label className="text-gray-400 text-xs uppercase tracking-wider">Offer Sequence</label>
+              <input
+                type="number"
+                value={finishSequence}
+                onChange={(e) => setFinishSequence(e.target.value)}
+                placeholder="12345"
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+              />
+            </div>
+            <button
+              onClick={handleFinish}
+              disabled={!!loading || !finishOwner || !finishSequence}
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
+            >
+              {loading === "finish" ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                  Releasing...
+                </span>
+              ) : (
+                "Release Escrow"
+              )}
+            </button>
+          </div>
+        </Card>
+
+        {/* Cancel Escrow */}
+        <Card title="Cancel Escrow">
+          <div className="space-y-4">
+            <div>
+              <label className="text-gray-400 text-xs uppercase tracking-wider">Escrow Owner Address</label>
+              <input
+                type="text"
+                value={cancelOwner}
+                onChange={(e) => setCancelOwner(e.target.value)}
+                placeholder="rOwner..."
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+              />
+            </div>
+            <div>
+              <label className="text-gray-400 text-xs uppercase tracking-wider">Offer Sequence</label>
+              <input
+                type="number"
+                value={cancelSequence}
+                onChange={(e) => setCancelSequence(e.target.value)}
+                placeholder="12345"
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+              />
+            </div>
+            <button
+              onClick={handleCancel}
+              disabled={!!loading || !cancelOwner || !cancelSequence}
+              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
+            >
+              {loading === "cancel" ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                  Cancelling...
+                </span>
+              ) : (
+                "Cancel Escrow"
+              )}
+            </button>
+          </div>
+        </Card>
+      </div>
+
       {/* Result */}
       {result && (
-        <Card title="Escrow Created">
+        <Card title="Transaction Result">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <span className="text-gray-400">Status:</span>
@@ -128,22 +286,33 @@ export default function EscrowPage({ seed, address }: Props) {
             </div>
             <div>
               <span className="text-gray-400">Hash:</span>
-              <code className="block text-xs text-xrpl-light bg-gray-800 px-3 py-2 rounded mt-1 break-all">
+              <a
+                href={`https://testnet.xrpl.org/transactions/${result.hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-xs text-xrpl-light hover:text-xrpl-accent bg-gray-800 px-3 py-2 rounded mt-1 break-all underline decoration-dotted"
+              >
                 {result.hash}
-              </code>
+              </a>
             </div>
-            <div>
-              <span className="text-gray-400">Amount:</span>
-              <span className="text-white ml-2">{result.amount} XRP</span>
-            </div>
-            <div>
-              <span className="text-gray-400">Releases after:</span>
-              <span className="text-white ml-2">{result.finishAfter}</span>
-            </div>
-            <div>
-              <span className="text-gray-400">Sequence:</span>
-              <span className="text-white ml-2">{result.sequence}</span>
-            </div>
+            {result.amount && (
+              <div>
+                <span className="text-gray-400">Amount:</span>
+                <span className="text-white ml-2">{result.amount} XRP</span>
+              </div>
+            )}
+            {result.finishAfter && (
+              <div>
+                <span className="text-gray-400">Releases after:</span>
+                <span className="text-white ml-2">{result.finishAfter}</span>
+              </div>
+            )}
+            {result.sequence && (
+              <div>
+                <span className="text-gray-400">Sequence:</span>
+                <span className="text-white ml-2">{result.sequence}</span>
+              </div>
+            )}
           </div>
         </Card>
       )}

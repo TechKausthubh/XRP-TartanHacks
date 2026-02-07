@@ -14,6 +14,7 @@ app.use(express.json());
 
 app.use("/api/wallet", walletRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api", paymentRoutes);  // mounts /api/pay convenience route
 app.use("/api/escrow", escrowRoutes);
 app.use("/api/account", accountRoutes);
 

@@ -16,6 +16,7 @@ export default function PaymentPage({ seed, address }: Props) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   if (!seed) {
     return (
@@ -28,6 +29,7 @@ export default function PaymentPage({ seed, address }: Props) {
   async function handleSend() {
     setLoading(true);
     setError("");
+    setSuccess("");
     setResult(null);
     try {
       if (mode === "xrp") {
@@ -37,6 +39,7 @@ export default function PaymentPage({ seed, address }: Props) {
         const res = await api.sendRLUSD({ senderSeed: seed, destination, amount, issuer });
         setResult(res);
       }
+      setSuccess("Payment sent successfully!");
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -48,7 +51,18 @@ export default function PaymentPage({ seed, address }: Props) {
     <div className="space-y-6">
       <h2 className="text-2xl font-bold text-white">Send Payment</h2>
 
-      {error && <p className="text-red-400 bg-red-900/20 px-4 py-2 rounded">{error}</p>}
+      {error && (
+        <div className="flex items-center gap-3 bg-red-900/20 border border-red-800 text-red-400 px-4 py-3 rounded-lg">
+          <span className="text-red-500 text-lg">&#10007;</span>
+          <span>{error}</span>
+        </div>
+      )}
+      {success && (
+        <div className="flex items-center gap-3 bg-green-900/20 border border-green-800 text-green-400 px-4 py-3 rounded-lg">
+          <span className="text-green-500 text-lg">&#10003;</span>
+          <span>{success}</span>
+        </div>
+      )}
 
       <Card title="Payment Details">
         {/* Mode Toggle */}
@@ -121,7 +135,14 @@ export default function PaymentPage({ seed, address }: Props) {
             disabled={loading || !destination || !amount}
             className="w-full bg-xrpl-accent hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
           >
-            {loading ? "Sending..." : `Send ${mode.toUpperCase()}`}
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <span className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></span>
+                Sending...
+              </span>
+            ) : (
+              `Send ${mode.toUpperCase()}`
+            )}
           </button>
         </div>
       </Card>
@@ -136,9 +157,14 @@ export default function PaymentPage({ seed, address }: Props) {
             </div>
             <div>
               <span className="text-gray-400">Hash:</span>
-              <code className="block text-xs text-xrpl-light bg-gray-800 px-3 py-2 rounded mt-1 break-all">
+              <a
+                href={`https://testnet.xrpl.org/transactions/${result.hash}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-xs text-xrpl-light hover:text-xrpl-accent bg-gray-800 px-3 py-2 rounded mt-1 break-all underline decoration-dotted"
+              >
                 {result.hash}
-              </code>
+              </a>
             </div>
             <div>
               <span className="text-gray-400">Amount:</span>
