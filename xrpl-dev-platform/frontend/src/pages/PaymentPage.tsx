@@ -22,7 +22,7 @@ export default function PaymentPage({ seed, address }: Props) {
   if (!seed) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-gray-400">Create a wallet first to send payments.</p>
+        <p className="text-white/60">Create a wallet first to send payments.</p>
       </div>
     );
   }
@@ -77,7 +77,7 @@ export default function PaymentPage({ seed, address }: Props) {
           <button
             onClick={() => setMode("xrp")}
             className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
-              mode === "xrp" ? "bg-xrpl-accent text-white" : "bg-gray-800 text-gray-400"
+              mode === "xrp" ? "bg-xrpl-accent text-xrpl-dark" : "bg-white/[0.06] text-white/70 border border-white/[0.06]"
             }`}
           >
             XRP
@@ -85,7 +85,7 @@ export default function PaymentPage({ seed, address }: Props) {
           <button
             onClick={() => setMode("rlusd")}
             className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
-              mode === "rlusd" ? "bg-xrpl-accent text-white" : "bg-gray-800 text-gray-400"
+              mode === "rlusd" ? "bg-xrpl-accent text-xrpl-dark" : "bg-white/[0.06] text-white/70 border border-white/[0.06]"
             }`}
           >
             RLUSD
@@ -94,25 +94,25 @@ export default function PaymentPage({ seed, address }: Props) {
 
         <div className="space-y-4">
           <div>
-            <label className="text-gray-400 text-xs uppercase tracking-wider">From</label>
-            <code className="block text-sm text-gray-300 bg-gray-800 px-3 py-2 rounded mt-1 break-all">
+            <label className="text-white/50 text-xs uppercase tracking-wider">From</label>
+            <code className="block text-sm text-xrpl-light bg-white/[0.04] border border-white/[0.06] px-3 py-2 rounded mt-1 break-all">
               {address}
             </code>
           </div>
 
           <div>
-            <label className="text-gray-400 text-xs uppercase tracking-wider">Destination Address</label>
+            <label className="text-white/50 text-xs uppercase tracking-wider">Destination Address</label>
             <input
               type="text"
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
               placeholder="rDestination..."
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+              className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent placeholder-white/40"
             />
           </div>
 
           <div>
-            <label className="text-gray-400 text-xs uppercase tracking-wider">
+            <label className="text-white/50 text-xs uppercase tracking-wider">
               Amount ({mode === "xrp" ? "XRP" : "RLUSD"})
             </label>
             <input
@@ -120,19 +120,19 @@ export default function PaymentPage({ seed, address }: Props) {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="10"
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+              className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent placeholder-white/40"
             />
           </div>
 
           {mode === "rlusd" && (
             <div>
-              <label className="text-gray-400 text-xs uppercase tracking-wider">RLUSD Issuer</label>
+              <label className="text-white/50 text-xs uppercase tracking-wider">RLUSD Issuer</label>
               <input
                 type="text"
                 value={issuer}
                 onChange={(e) => setIssuer(e.target.value)}
                 placeholder="rIssuer..."
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent placeholder-white/40"
               />
             </div>
           )}
@@ -140,7 +140,7 @@ export default function PaymentPage({ seed, address }: Props) {
           <button
             onClick={handleSend}
             disabled={loading || !destination || !amount}
-            className="w-full bg-xrpl-accent hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
+            className="w-full bg-xrpl-accent hover:bg-xrpl-accent-muted text-xrpl-dark font-semibold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">
@@ -159,22 +159,22 @@ export default function PaymentPage({ seed, address }: Props) {
         <Card title="Transaction Result">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-gray-400">Status:</span>
+              <span className="text-white/50">Status:</span>
               <StatusBadge status={result.status} />
             </div>
             <div>
-              <span className="text-gray-400">Hash:</span>
+              <span className="text-white/50">Hash:</span>
               <a
                 href={`https://testnet.xrpl.org/transactions/${result.hash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-xs text-xrpl-light hover:text-xrpl-accent bg-gray-800 px-3 py-2 rounded mt-1 break-all underline decoration-dotted"
+                className="block text-xs text-xrpl-light hover:text-xrpl-accent bg-white/[0.04] border border-white/[0.06] px-3 py-2 rounded mt-1 break-all underline decoration-dotted"
               >
                 {result.hash}
               </a>
             </div>
             <div>
-              <span className="text-gray-400">Amount:</span>
+              <span className="text-white/50">Amount:</span>
               <span className="text-white ml-2">{result.amount} {result.currency || "XRP"}</span>
             </div>
           </div>

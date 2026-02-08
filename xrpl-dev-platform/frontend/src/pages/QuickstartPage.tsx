@@ -153,20 +153,20 @@ export default function QuickstartPage() {
     <div className="space-y-8 max-w-4xl">
       <div>
         <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 bg-xrpl-blue/20 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-10 bg-xrpl-accent/20 border border-xrpl-accent/20 rounded-lg flex items-center justify-center">
             <span className="text-xrpl-accent font-bold text-lg">X</span>
           </div>
           <h2 className="text-2xl font-bold text-white">Dev Quickstart</h2>
         </div>
-        <p className="text-gray-400 mt-2">
+        <p className="text-white/60 mt-2">
           Build on XRPL in minutes. Our SDK wraps the complexity of XRP Ledger transactions into simple, one-line function calls &mdash; like Stripe for blockchain.
         </p>
       </div>
 
       {/* Postman collection */}
       <Card title="Postman Collection">
-        <p className="text-gray-400 text-sm mb-3">
-          Import this collection into Postman to call Wallet, Payment, Escrow, and Account APIs directly. Base URL: <code className="text-xrpl-light">http://localhost:4000</code>. Set variables <code className="text-gray-500">address</code> and <code className="text-gray-500">seed</code> from the wallets list below.
+        <p className="text-white/60 text-sm mb-3">
+          Import this collection into Postman to call Wallet, Payment, Escrow, and Account APIs directly. Base URL: <code className="text-xrpl-light">http://localhost:4000</code>. Set variables <code className="text-white/50">address</code> and <code className="text-white/50">seed</code> from the wallets list below.
         </p>
         <a
           href={postmanDownloadUrl}
@@ -180,7 +180,7 @@ export default function QuickstartPage() {
       {/* Wallets created on testnet */}
       <Card title="Testnet Wallets (this session)">
         <div className="flex items-center justify-between gap-2 mb-3">
-          <p className="text-gray-400 text-sm">
+          <p className="text-white/60 text-sm">
             Wallets created via &quot;Create Wallet&quot; in this session. Copy address/seed for payments and escrows.
           </p>
           <button
@@ -193,22 +193,22 @@ export default function QuickstartPage() {
         </div>
         {walletListError && <p className="text-amber-500 text-sm mb-2">{walletListError}</p>}
         {wallets.length === 0 && !walletListError && (
-          <p className="text-gray-500 text-sm">No wallets created yet. Create one from the Wallet page.</p>
+          <p className="text-white/50 text-sm">No wallets created yet. Create one from the Wallet page.</p>
         )}
         {wallets.length > 0 && (
           <div className="space-y-3 max-h-64 overflow-y-auto">
             {wallets.map((w, i) => (
-              <div key={w.address} className="bg-gray-800 rounded-lg p-4 text-sm">
+              <div key={w.address} className="glass rounded-lg p-4 text-sm bg-white/[0.02]">
                 <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="text-gray-500">#{i + 1}</span>
+                  <span className="text-white/50">#{i + 1}</span>
                   <span className="text-xrpl-accent font-mono">{w.balance} XRP</span>
                 </div>
                 <div className="mb-1">
-                  <span className="text-gray-500 text-xs">Address</span>
+                  <span className="text-white/50 text-xs">Address</span>
                   <code className="block text-xrpl-light break-all mt-0.5">{w.address}</code>
                 </div>
                 <div>
-                  <span className="text-gray-500 text-xs">Secret (seed)</span>
+                  <span className="text-white/50 text-xs">Secret (seed)</span>
                   <code className="block text-yellow-400 break-all mt-0.5">{w.secret}</code>
                 </div>
               </div>
@@ -219,15 +219,15 @@ export default function QuickstartPage() {
 
       {/* AI: Chat → SDK code (Dedalus Labs) */}
       <Card title="AI: Describe what you want → SDK code">
-        <p className="text-gray-400 text-sm mb-3">
+        <p className="text-white/60 text-sm mb-3">
           Chat with the AI to get ready-to-run XRPL SDK code (powered by Dedalus Labs). Example: &quot;Create an escrow that releases in 7 days&quot;
         </p>
         {aiError && (
-          <p className="text-amber-500 text-sm mb-2">{aiError}</p>
+          <p className="text-amber-400 text-sm mb-2">{aiError}</p>
         )}
-        <div className="bg-gray-800/50 rounded-lg border border-gray-700 min-h-[200px] max-h-[360px] overflow-y-auto flex flex-col">
+        <div className="bg-white/[0.04] rounded-lg border border-white/[0.06] min-h-[200px] max-h-[360px] overflow-y-auto flex flex-col">
           {aiMessages.length === 0 && (
-            <p className="text-gray-500 text-sm p-4">Send a message to generate code. Conversation context is kept so you can ask for changes.</p>
+            <p className="text-white/50 text-sm p-4">Send a message to generate code. Conversation context is kept so you can ask for changes.</p>
           )}
           <div className="p-3 space-y-3 flex-1">
             {aiMessages.map((m, i) => (
@@ -238,15 +238,15 @@ export default function QuickstartPage() {
                 <div
                   className={`max-w-[85%] rounded-lg px-4 py-2 text-sm ${
                     m.role === "user"
-                      ? "bg-xrpl-blue text-white"
-                      : "bg-gray-700 text-gray-100"
+                      ? "bg-xrpl-accent/30 text-white border border-xrpl-accent/30"
+                      : "bg-white/[0.06] text-white/90 border border-white/[0.06]"
                   }`}
                 >
                   {m.role === "assistant" && /```/.test(m.content) ? (
                     <div className="space-y-2">
                       {m.content.split(/(```[\s\S]*?```)/g).map((part, j) =>
                         part.startsWith("```") ? (
-                          <pre key={j} className="bg-gray-900 rounded p-3 overflow-x-auto text-xs text-xrpl-light mt-2">
+                          <pre key={j} className="bg-white/[0.06] rounded p-3 overflow-x-auto text-xs text-xrpl-light mt-2 border border-white/[0.06]">
                             <code>{part.replace(/^```\w*\n?|```$/g, "").trim()}</code>
                           </pre>
                         ) : (
@@ -262,24 +262,24 @@ export default function QuickstartPage() {
             ))}
             {aiLoading && (
               <div className="flex justify-start">
-                <span className="bg-gray-700 text-gray-400 rounded-lg px-4 py-2 text-sm">Generating...</span>
+                <span className="bg-white/[0.06] text-white/60 rounded-lg px-4 py-2 text-sm border border-white/[0.06]">Generating...</span>
               </div>
             )}
           </div>
-          <div className="p-3 border-t border-gray-700 flex gap-2">
+          <div className="p-3 border-t border-white/[0.06] flex gap-2">
             <input
               type="text"
               value={aiInput}
               onChange={(e) => setAiInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleAiSend()}
               placeholder="e.g. Create an escrow that releases in 7 days"
-              className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-xrpl-accent"
+              className="flex-1 bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-2 text-white placeholder-white/40 focus:outline-none focus:border-xrpl-accent"
               disabled={aiLoading}
             />
             <button
               onClick={handleAiSend}
               disabled={aiLoading || !aiInput.trim()}
-              className="bg-xrpl-accent hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
+              className="bg-xrpl-accent hover:bg-xrpl-accent-muted text-xrpl-dark font-semibold py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
             >
               Send
             </button>
@@ -289,10 +289,10 @@ export default function QuickstartPage() {
 
       {/* Install */}
       <Card title="Installation">
-        <div className="bg-gray-800 rounded-lg p-4 font-mono text-sm">
-          <span className="text-gray-500">$</span> <span className="text-green-400">npm install xrpl</span>
+        <div className="glass rounded-lg p-4 font-mono text-sm bg-white/[0.02]">
+          <span className="text-white/50">$</span> <span className="text-emerald-400">npm install xrpl</span>
         </div>
-        <p className="text-gray-500 text-sm mt-3">That&apos;s it. Import the SDK and start building.</p>
+        <p className="text-white/50 text-sm mt-3">That&apos;s it. Import the SDK and start building.</p>
       </Card>
 
       {/* SDK Examples with tooltips */}
@@ -300,8 +300,8 @@ export default function QuickstartPage() {
         <h3 className="text-lg font-semibold text-white mb-4">SDK Reference</h3>
         <div className="space-y-4">
           {snippets.map((s, i) => (
-            <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-800 flex items-start justify-between gap-2">
+            <div key={i} className="glass rounded-xl overflow-hidden bg-white/[0.02]">
+              <div className="px-6 py-4 border-b border-white/[0.06] flex items-start justify-between gap-2">
                 <div>
                   <h4 className="text-white font-semibold flex items-center">
                     {s.title}
@@ -310,7 +310,7 @@ export default function QuickstartPage() {
                       content={FEATURE_GUIDES[s.guideKey]?.content ?? s.description}
                     />
                   </h4>
-                  <p className="text-gray-500 text-sm mt-1">{s.description}</p>
+                  <p className="text-white/50 text-sm mt-1">{s.description}</p>
                 </div>
               </div>
               <pre className="px-6 py-4 overflow-x-auto text-sm">
@@ -324,18 +324,18 @@ export default function QuickstartPage() {
       {/* REST API */}
       <div>
         <h3 className="text-lg font-semibold text-white mb-4">REST API Endpoints</h3>
-        <p className="text-gray-400 text-sm mb-4">Prefer HTTP? Every SDK function is also exposed as a REST endpoint.</p>
+        <p className="text-white/60 text-sm mb-4">Prefer HTTP? Every SDK function is also exposed as a REST endpoint.</p>
         <div className="space-y-4">
           {restSnippets.map((s, i) => (
-            <div key={i} className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden">
-              <div className="px-6 py-3 border-b border-gray-800 flex items-center gap-2">
-                <span className="text-xs bg-xrpl-blue/30 text-xrpl-light px-2 py-0.5 rounded font-mono">
+            <div key={i} className="glass rounded-xl overflow-hidden bg-white/[0.02]">
+              <div className="px-6 py-3 border-b border-white/[0.06] flex items-center gap-2">
+                <span className="text-xs bg-xrpl-accent/20 text-xrpl-light px-2 py-0.5 rounded font-mono border border-xrpl-accent/20">
                   {s.title.split(" ")[0]}
                 </span>
                 <span className="text-white font-mono text-sm">{s.title.split(" ").slice(1).join(" ")}</span>
               </div>
               <pre className="px-6 py-4 overflow-x-auto text-sm">
-                <code className="text-gray-300">{s.code}</code>
+                <code className="text-white/80">{s.code}</code>
               </pre>
             </div>
           ))}
@@ -344,9 +344,9 @@ export default function QuickstartPage() {
 
       {/* Architecture */}
       <Card title="Architecture">
-        <div className="text-sm text-gray-400 space-y-3">
+        <div className="text-sm text-white/60 space-y-3">
           <p>The platform is organized into clean layers:</p>
-          <div className="bg-gray-800 rounded-lg p-4 font-mono text-xs space-y-1">
+          <div className="glass rounded-lg p-4 font-mono text-xs space-y-1 bg-white/[0.02]">
             <p className="text-xrpl-accent">xrpl/client.ts      &larr; XRPL connection (auto-reconnect)</p>
             <p className="text-xrpl-light">xrpl/sdk.ts          &larr; One-line developer SDK</p>
             <p className="text-green-400">services/*Service.ts &larr; Business logic layer</p>

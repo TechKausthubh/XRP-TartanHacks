@@ -39,7 +39,7 @@ export default function EscrowPage({ seed, address }: Props) {
   if (!seed) {
     return (
       <div className="flex items-center justify-center h-64">
-        <p className="text-gray-400">Create a wallet first to manage escrows.</p>
+        <p className="text-white/60">Create a wallet first to manage escrows.</p>
       </div>
     );
   }
@@ -139,46 +139,46 @@ export default function EscrowPage({ seed, address }: Props) {
       <Card title="Create Time-Based Escrow">
         <div className="space-y-4">
           <div>
-            <label className="text-gray-400 text-xs uppercase tracking-wider">Destination Address</label>
+            <label className="text-white/50 text-xs uppercase tracking-wider">Destination Address</label>
             <input
               type="text"
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
               placeholder="rDestination..."
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+              className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent placeholder-white/40"
             />
           </div>
 
           <div>
-            <label className="text-gray-400 text-xs uppercase tracking-wider">Amount (XRP)</label>
+            <label className="text-white/50 text-xs uppercase tracking-wider">Amount (XRP)</label>
             <input
               type="text"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="10"
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+              className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent placeholder-white/40"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-gray-400 text-xs uppercase tracking-wider">Release After (minutes)</label>
+              <label className="text-white/50 text-xs uppercase tracking-wider">Release After (minutes)</label>
               <input
                 type="number"
                 value={finishMinutes}
                 onChange={(e) => setFinishMinutes(e.target.value)}
                 placeholder="5"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent placeholder-white/40"
               />
             </div>
             <div>
-              <label className="text-gray-400 text-xs uppercase tracking-wider">Cancel After (minutes, optional)</label>
+              <label className="text-white/50 text-xs uppercase tracking-wider">Cancel After (minutes, optional)</label>
               <input
                 type="number"
                 value={cancelMinutes}
                 onChange={(e) => setCancelMinutes(e.target.value)}
                 placeholder="60"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent placeholder-white/40"
               />
             </div>
           </div>
@@ -186,7 +186,7 @@ export default function EscrowPage({ seed, address }: Props) {
           <button
             onClick={handleCreate}
             disabled={!!loading || !destination || !amount || !finishMinutes}
-            className="w-full bg-xrpl-accent hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
+            className="w-full bg-xrpl-accent hover:bg-xrpl-accent-muted text-xrpl-dark font-semibold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
           >
             {loading === "create" ? (
               <span className="flex items-center justify-center gap-2">
@@ -206,23 +206,23 @@ export default function EscrowPage({ seed, address }: Props) {
         <Card title="Release Escrow">
           <div className="space-y-4">
             <div>
-              <label className="text-gray-400 text-xs uppercase tracking-wider">Escrow Owner Address</label>
+              <label className="text-white/50 text-xs uppercase tracking-wider">Escrow Owner Address</label>
               <input
                 type="text"
                 value={finishOwner}
                 onChange={(e) => setFinishOwner(e.target.value)}
                 placeholder="rOwner..."
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent placeholder-white/40"
               />
             </div>
             <div>
-              <label className="text-gray-400 text-xs uppercase tracking-wider">Offer Sequence</label>
+              <label className="text-white/50 text-xs uppercase tracking-wider">Offer Sequence</label>
               <input
                 type="number"
                 value={finishSequence}
                 onChange={(e) => setFinishSequence(e.target.value)}
                 placeholder="12345"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent placeholder-white/40"
               />
             </div>
             <button
@@ -246,23 +246,23 @@ export default function EscrowPage({ seed, address }: Props) {
         <Card title="Cancel Escrow">
           <div className="space-y-4">
             <div>
-              <label className="text-gray-400 text-xs uppercase tracking-wider">Escrow Owner Address</label>
+              <label className="text-white/50 text-xs uppercase tracking-wider">Escrow Owner Address</label>
               <input
                 type="text"
                 value={cancelOwner}
                 onChange={(e) => setCancelOwner(e.target.value)}
                 placeholder="rOwner..."
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent placeholder-white/40"
               />
             </div>
             <div>
-              <label className="text-gray-400 text-xs uppercase tracking-wider">Offer Sequence</label>
+              <label className="text-white/50 text-xs uppercase tracking-wider">Offer Sequence</label>
               <input
                 type="number"
                 value={cancelSequence}
                 onChange={(e) => setCancelSequence(e.target.value)}
                 placeholder="12345"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent"
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-lg px-4 py-3 text-white mt-1 focus:outline-none focus:border-xrpl-accent placeholder-white/40"
               />
             </div>
             <button
@@ -288,35 +288,35 @@ export default function EscrowPage({ seed, address }: Props) {
         <Card title="Transaction Result">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-gray-400">Status:</span>
+              <span className="text-white/50">Status:</span>
               <StatusBadge status={result.status} />
             </div>
             <div>
-              <span className="text-gray-400">Hash:</span>
+              <span className="text-white/50">Hash:</span>
               <a
                 href={`https://testnet.xrpl.org/transactions/${result.hash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block text-xs text-xrpl-light hover:text-xrpl-accent bg-gray-800 px-3 py-2 rounded mt-1 break-all underline decoration-dotted"
+                className="block text-xs text-xrpl-light hover:text-xrpl-accent bg-white/[0.04] border border-white/[0.06] px-3 py-2 rounded mt-1 break-all underline decoration-dotted"
               >
                 {result.hash}
               </a>
             </div>
             {result.amount && (
               <div>
-                <span className="text-gray-400">Amount:</span>
+                <span className="text-white/50">Amount:</span>
                 <span className="text-white ml-2">{result.amount} XRP</span>
               </div>
             )}
             {result.finishAfter && (
               <div>
-                <span className="text-gray-400">Releases after:</span>
+                <span className="text-white/50">Releases after:</span>
                 <span className="text-white ml-2">{result.finishAfter}</span>
               </div>
             )}
             {result.sequence && (
               <div>
-                <span className="text-gray-400">Sequence:</span>
+                <span className="text-white/50">Sequence:</span>
                 <span className="text-white ml-2">{result.sequence}</span>
               </div>
             )}
@@ -327,16 +327,16 @@ export default function EscrowPage({ seed, address }: Props) {
       {/* Active Escrows */}
       <Card title="Active Escrows">
         {escrows.length === 0 ? (
-          <p className="text-gray-500">No active escrows.</p>
+          <p className="text-white/50">No active escrows.</p>
         ) : (
           <>
-            <p className="text-gray-400 text-xs mb-3">
+            <p className="text-white/60 text-xs mb-3">
               For Release or Cancel, use <strong>Owner</strong> = account and <strong>Offer Sequence</strong> = sequence below.
             </p>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="text-gray-400 border-b border-gray-800">
+                  <tr className="text-white/50 border-b border-white/10">
                     <th className="text-left py-2">Owner (Account)</th>
                     <th className="text-left py-2">Destination</th>
                     <th className="text-left py-2">Amount (XRP)</th>
@@ -347,7 +347,7 @@ export default function EscrowPage({ seed, address }: Props) {
                 </thead>
                 <tbody>
                   {escrows.map((e: any, i: number) => (
-                    <tr key={i} className="border-b border-gray-800">
+                    <tr key={i} className="border-b border-white/10">
                       <td className="py-2 font-mono text-xs">{e.account ?? ""}</td>
                       <td className="py-2 font-mono text-xs">{e.destination ?? ""}</td>
                       <td className="py-2">{e.amount}</td>
