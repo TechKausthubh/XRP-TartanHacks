@@ -15,9 +15,9 @@ const navItems: { page: Page; label: string; icon: string }[] = [
 
 export default function Sidebar({ currentPage, onNavigate }: Props) {
   return (
-    <aside className="w-64 bg-gray-900 border-r border-gray-800 p-6 flex flex-col">
+    <aside className="w-64 glass border-r border-white/[0.06] p-6 flex flex-col shrink-0">
       <h1 className="text-xl font-bold text-xrpl-accent mb-1">XRPL Dev Platform</h1>
-      <p className="text-xs text-gray-500 mb-8">Testnet</p>
+      <p className="text-xs text-white/50 mb-8">Testnet</p>
       <nav className="flex flex-col gap-1">
         {navItems.map((item) => (
           <button
@@ -25,8 +25,8 @@ export default function Sidebar({ currentPage, onNavigate }: Props) {
             onClick={() => onNavigate(item.page)}
             className={`flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
               currentPage === item.page
-                ? "bg-xrpl-blue text-white"
-                : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                ? "bg-xrpl-accent/20 text-xrpl-accent border border-xrpl-accent/30"
+                : "text-white/70 hover:bg-white/[0.06] hover:text-white border border-transparent"
             }`}
           >
             <span>{item.icon}</span>

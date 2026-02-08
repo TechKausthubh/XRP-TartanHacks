@@ -4,4 +4,72 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  @apply bg-xrpl-dark text-white antialiased;
+}
+
+/* Moving gradient orbs — modern AI-style background */
+.app-bg {
+  @apply fixed inset-0 overflow-hidden -z-10;
+  background: #050508;
+}
+
+.app-bg-orb {
+  @apply absolute rounded-full pointer-events-none;
+  filter: blur(80px);
+  opacity: 0.4;
+}
+
+.app-bg-orb-1 {
+  width: 60vw;
+  height: 60vw;
+  max-width: 800px;
+  max-height: 800px;
+  top: -20%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.35) 0%, transparent 70%);
+  animation: orb-1 25s ease-in-out infinite;
+}
+
+.app-bg-orb-2 {
+  width: 50vw;
+  height: 50vw;
+  max-width: 600px;
+  max-height: 600px;
+  top: 40%;
+  right: -15%;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.3) 0%, transparent 70%);
+  animation: orb-2 30s ease-in-out infinite;
+}
+
+.app-bg-orb-3 {
+  width: 40vw;
+  height: 40vw;
+  max-width: 500px;
+  max-height: 500px;
+  bottom: -10%;
+  left: 30%;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.2) 0%, transparent 70%);
+  animation: orb-3 22s ease-in-out infinite;
+}
+
+@keyframes orb-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -40px) scale(1.05); }
+  66% { transform: translate(-20px, 20px) scale(0.95); }
+}
+
+@keyframes orb-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(-40px, 30px) scale(0.98); }
+  66% { transform: translate(25px, -25px) scale(1.02); }
+}
+
+@keyframes orb-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-15px, -30px) scale(1.03); }
+}
+
+/* Glass surface utility */
+.glass {
+  @apply bg-white/[0.03] border border-white/[0.06] backdrop-blur-xl;
 }

@@ -14,9 +14,14 @@ export default function App() {
   const [walletSeed, setWalletSeed] = useState("");
 
   return (
-    <div className="flex min-h-screen bg-xrpl-dark">
+    <div className="flex min-h-screen relative">
+      <div className="app-bg" aria-hidden>
+        <div className="app-bg-orb app-bg-orb-1" />
+        <div className="app-bg-orb app-bg-orb-2" />
+        <div className="app-bg-orb app-bg-orb-3" />
+      </div>
       <Sidebar currentPage={page} onNavigate={setPage} />
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 p-8 overflow-auto relative">
         {page === "dashboard" && (
           <Dashboard address={walletAddress} />
         )}

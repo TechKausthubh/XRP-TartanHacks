@@ -36,13 +36,13 @@ export default function Dashboard({ address }: Props) {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-center max-w-md">
-          <div className="w-16 h-16 bg-xrpl-blue/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <div className="w-16 h-16 bg-xrpl-accent/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-xrpl-accent/20">
             <span className="text-3xl text-xrpl-accent font-bold">X</span>
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">Welcome to XRPL Dev Platform</h2>
-          <p className="text-gray-400 mb-6">Your one-stop toolkit for building on the XRP Ledger. Create wallets, send payments, and manage escrows with simple one-line SDK calls.</p>
-          <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 text-left">
-            <p className="text-gray-500 text-xs uppercase tracking-wider mb-2">Quick Start</p>
+          <p className="text-white/60 mb-6">Your one-stop toolkit for building on the XRP Ledger. Create wallets, send payments, and manage escrows with simple one-line SDK calls.</p>
+          <div className="glass rounded-xl p-4 text-left">
+            <p className="text-white/50 text-xs uppercase tracking-wider mb-2">Quick Start</p>
             <code className="text-sm text-xrpl-light">
               Navigate to <span className="text-xrpl-accent">Wallet</span> in the sidebar to begin.
             </code>
@@ -55,7 +55,7 @@ export default function Dashboard({ address }: Props) {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="flex items-center gap-3 text-gray-400">
+        <div className="flex items-center gap-3 text-white/60">
           <span className="animate-spin h-5 w-5 border-2 border-xrpl-accent border-t-transparent rounded-full"></span>
           Loading dashboard...
         </div>
@@ -75,25 +75,25 @@ export default function Dashboard({ address }: Props) {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-white">Developer Dashboard</h2>
-        <span className="text-xs bg-green-900/30 text-green-400 border border-green-800 px-3 py-1 rounded-full">
+        <span className="text-xs bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full">
           Testnet Connected
         </span>
       </div>
 
       {/* Account Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-gradient-to-br from-xrpl-blue/30 to-gray-900 border border-gray-800 rounded-xl p-6">
-          <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Balance</p>
+        <div className="glass rounded-xl p-6 bg-gradient-to-br from-xrpl-accent/10 to-transparent">
+          <p className="text-white/50 text-xs uppercase tracking-wider mb-1">Balance</p>
           <p className="text-3xl font-bold text-xrpl-accent">
-            {accountInfo?.balance?.toFixed(2)} <span className="text-lg text-gray-400">XRP</span>
+            {accountInfo?.balance?.toFixed(2)} <span className="text-lg text-white/50">XRP</span>
           </p>
         </div>
-        <div className="bg-gradient-to-br from-purple-900/20 to-gray-900 border border-gray-800 rounded-xl p-6">
-          <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Account Sequence</p>
+        <div className="glass rounded-xl p-6 bg-gradient-to-br from-xrpl-violet/10 to-transparent">
+          <p className="text-white/50 text-xs uppercase tracking-wider mb-1">Account Sequence</p>
           <p className="text-3xl font-bold text-white">{accountInfo?.sequence}</p>
         </div>
-        <div className="bg-gradient-to-br from-emerald-900/20 to-gray-900 border border-gray-800 rounded-xl p-6">
-          <p className="text-gray-400 text-xs uppercase tracking-wider mb-1">Active Escrows</p>
+        <div className="glass rounded-xl p-6 bg-gradient-to-br from-emerald-500/10 to-transparent">
+          <p className="text-white/50 text-xs uppercase tracking-wider mb-1">Active Escrows</p>
           <p className="text-3xl font-bold text-white">{escrows.length}</p>
         </div>
       </div>
@@ -102,13 +102,13 @@ export default function Dashboard({ address }: Props) {
       <Card title="Wallet Info">
         <div className="space-y-3">
           <div>
-            <label className="text-gray-400 text-xs uppercase tracking-wider">Address</label>
-            <code className="block text-sm text-xrpl-light bg-gray-800 px-3 py-2 rounded mt-1 break-all">
+            <label className="text-white/50 text-xs uppercase tracking-wider">Address</label>
+            <code className="block text-sm text-xrpl-light bg-white/[0.04] px-3 py-2 rounded mt-1 break-all border border-white/[0.06]">
               {address}
             </code>
           </div>
           <div>
-            <label className="text-gray-400 text-xs uppercase tracking-wider">Network</label>
+            <label className="text-white/50 text-xs uppercase tracking-wider">Network</label>
             <p className="text-sm text-white mt-1">XRPL Testnet (wss://s.altnet.rippletest.net:51233)</p>
           </div>
         </div>
@@ -120,7 +120,7 @@ export default function Dashboard({ address }: Props) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-gray-400 border-b border-gray-800">
+                <tr className="text-white/50 border-b border-white/10">
                   <th className="text-left py-2">Destination</th>
                   <th className="text-left py-2">Amount (XRP)</th>
                   <th className="text-left py-2">Finish After</th>
@@ -128,7 +128,7 @@ export default function Dashboard({ address }: Props) {
               </thead>
               <tbody>
                 {escrows.map((e: any, i: number) => (
-                  <tr key={i} className="border-b border-gray-800">
+                  <tr key={i} className="border-b border-white/10">
                     <td className="py-2 font-mono text-xs">{e.destination?.slice(0, 20)}...</td>
                     <td className="py-2">{e.amount}</td>
                     <td className="py-2 text-xs">{e.finishAfter ?? "N/A"}</td>
@@ -143,12 +143,12 @@ export default function Dashboard({ address }: Props) {
       {/* Recent Transactions */}
       <Card title="Recent Transactions">
         {transactions.length === 0 ? (
-          <p className="text-gray-500">No transactions yet.</p>
+          <p className="text-white/50">No transactions yet.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="text-gray-400 border-b border-gray-800">
+                <tr className="text-white/50 border-b border-white/10">
                   <th className="text-left py-2">Type</th>
                   <th className="text-left py-2">From</th>
                   <th className="text-left py-2">To</th>
@@ -158,9 +158,9 @@ export default function Dashboard({ address }: Props) {
               </thead>
               <tbody>
                 {transactions.slice(0, 10).map((tx: any, i: number) => (
-                  <tr key={i} className="border-b border-gray-800 hover:bg-gray-800/50 transition-colors">
+                  <tr key={i} className="border-b border-white/10 hover:bg-white/[0.04] transition-colors">
                     <td className="py-2">
-                      <span className="bg-xrpl-blue/20 text-xrpl-light text-xs px-2 py-1 rounded">
+                      <span className="bg-xrpl-accent/20 text-xrpl-light text-xs px-2 py-1 rounded border border-xrpl-accent/20">
                         {tx.type}
                       </span>
                     </td>
@@ -177,7 +177,7 @@ export default function Dashboard({ address }: Props) {
                           {tx.hash.slice(0, 12)}...
                         </a>
                       ) : (
-                        <span className="text-gray-600 text-xs">{"\u2014"}</span>
+                        <span className="text-white/40 text-xs">{"\u2014"}</span>
                       )}
                     </td>
                     <td className="py-2">
